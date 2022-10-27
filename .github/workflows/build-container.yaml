@@ -2,10 +2,9 @@ env:
     SYSDIG_SECURE_ENDPOINT: "https://secure.sysdig.com"
     REGISTRY_HOST: "ghcr.io"
     IMAGE_NAME: "sysdig-cli-scanner"
-    IMAGE_TAG: ""
     DOCKERFILE_CONTEXT: "container-image/"
   
-name: Container build, scan and push
+name: Build, scan and push the sysdig-cli-scanner container
 
 on:
   workflow_dispatch:
@@ -23,10 +22,11 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run:  |
-        curl -sLO https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt
-        LATEST_TAG=$(gh api -H "Accept: application/vnd.github+json" /users/e-minguez/packages/container/testactions/versions | jq -r 'sort_by(.created_at) | last | .metadata.container.tags[0]')
-        if [ ! -f ${GITHUB_WORKSPACE}/cache/latest_version.txt ] || [ $(cat ./latest_version.txt) != ${LATEST_TAG} ]; then
-          echo "Container versions differ, building $(cat ./latest_version.txt)"
+        LATEST_VERSION=$(curl -sL https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt)
+        IMAGE_TAG=$(gh api -H "Accept: application/vnd.github+json" /users/e-minguez/packages/container/testactions/versions | jq -r 'sort_by(.created_at) | last | .metadata.container.tags[0]')
+        if [ ! -f ${GITHUB_WORKSPACE}/cache/latest_version.txt ] || [ ${LATEST_VERSION} != ${IMAGE_TAG} ]; then
+          echo "Container versions differ, building ${LATEST_VERSION}"
+          echo "IMAGE_TAG=${LATEST_VERSION}" >> ${GITHUB_ENV}
         else
           echo "Container already using latest version"
           exit 1

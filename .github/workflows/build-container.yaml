@@ -45,9 +45,8 @@ jobs:
         file: "${{ env.DOCKERFILE_CONTEXT }}Containerfile"
         tags: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         load: true
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+        build-args: |
+          VERSION=${{ env.LATEST_VERSION }}
     
     - name: Setup cache
       uses: actions/cache@v3
@@ -90,6 +89,5 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: ${{ env.DOCKERFILE_CONTEXT }}
-        platforms: linux/amd64, linux/arm64
         push: true
         tags: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}

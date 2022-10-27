@@ -5,7 +5,8 @@ ADD https://download.sysdig.com/scanning/bin/sysdig-cli-scanner/${VERSION}/linux
 RUN chmod a+x /sysdig-cli-scanner
 RUN apk update && apk add ca-certificates
 
-FROM gcr.io/distroless/static-debian11
+FROM gcr.io/distroless/static-debian11:nonroot
 COPY --from=builder /etc/ssl/certs /etc/ssl/certs
 COPY --from=builder /sysdig-cli-scanner /
+USER 65532:65532
 ENTRYPOINT ["/sysdig-cli-scanner"]

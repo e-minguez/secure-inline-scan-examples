@@ -42,7 +42,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: ${{ env.DOCKERFILE_CONTEXT }}
-        file: "Containerfile"
+        file: "${{ env.DOCKERFILE_CONTEXT }}Containerfile"
         tags: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         load: true
 

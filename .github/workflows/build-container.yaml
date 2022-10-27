@@ -24,7 +24,7 @@ jobs:
         GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run:  |
         curl -sLO https://download.sysdig.com/scanning/sysdig-cli-scanner/latest_version.txt
-        LATEST_TAG=$(gh api -H "Accept: application/vnd.github+json" /users/e-minguez/packages/containers/testactions/versions | jq -r 'sort_by(.created_at) | last | .metadata.container.tags[0]')
+        LATEST_TAG=$(gh api -H "Accept: application/vnd.github+json" /users/e-minguez/packages/container/testactions/versions | jq -r 'sort_by(.created_at) | last | .metadata.container.tags[0]')
         if [ ! -f ${GITHUB_WORKSPACE}/cache/latest_version.txt ] || [ $(cat ./latest_version.txt) != ${LATEST_TAG} ]; then
           echo "Container versions differ, building $(cat ./latest_version.txt)"
         else

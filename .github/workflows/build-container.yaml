@@ -46,7 +46,7 @@ jobs:
         tags: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
         load: true
         build-args: |
-          VERSION=${{ env.LATEST_VERSION }}
+          VERSION=${{ env.IMAGE_TAG }}
     
     - name: Setup cache
       uses: actions/cache@v3

@@ -91,4 +91,6 @@ jobs:
         context: ${{ env.DOCKERFILE_CONTEXT }}
         push: true
         file: "${{ env.DOCKERFILE_CONTEXT }}Containerfile"
+        build-args: |
+          VERSION=${{ env.IMAGE_TAG }}
         tags: ${{ env.REGISTRY_HOST }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
